@@ -1,0 +1,5 @@
+/algo/
+__pycache__/
+*.pyc
+.DS_Store
+pg-streak-kit/

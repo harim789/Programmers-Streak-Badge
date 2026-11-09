@@ -1,0 +1,67 @@
+name: Programmers Streak Badge
+
+on:
+  schedule:
+    - cron: "7 * * * *"    # 매시 7분
+    - cron: "5 15 * * *"   # KST 자정 직후 (00:05 KST)
+  workflow_dispatch:
+  repository_dispatch:
+    types: [solved]        # README "풀자마자 바로 갱신하기"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: programmers-streak
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check settings
+        env:
+          ALGO_REPO: ${{ vars.ALGO_REPO }}
+        run: |
+          if [ -z "$ALGO_REPO" ]; then
+            echo "::error::ALGO_REPO 변수를 등록하세요 — README 5단계"
+            exit 1
+          fi
+
+      - name: Checkout badge repo
+        uses: actions/checkout@v4
+
+      - name: Checkout algorithm repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ vars.ALGO_REPO }}
+          path: algo
+          fetch-depth: 0
+          token: ${{ secrets.ALGO_REPO_TOKEN || github.token }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Build badge
+        env:
+          ALGO_REPO: ${{ vars.ALGO_REPO }}
+          ALGO_PATH: algo
+          PLATFORM_DIRS: ${{ vars.PLATFORM_DIRS }}
+          PROGRAMMERS_ID: ${{ secrets.PROGRAMMERS_ID }}
+          PROGRAMMERS_PW: ${{ secrets.PROGRAMMERS_PW }}
+        run: python streak/main.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets streak/data
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+          git commit -m "chore(streak): update badge"
+          git pull --rebase --autostash
+          git push
