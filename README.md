@@ -225,6 +225,8 @@ GitHub 오른쪽 위 내 프로필 사진 → <img src="docs/buttons/settings.sv
 |:--|:--|
 | `BADGE_DISPATCH_TOKEN` | ①에서 복사한 토큰 |
 
+> ⚠️ Name은 **반드시 `BADGE_DISPATCH_TOKEN`** 그대로 입력하세요. ①의 Token name과는 별개입니다. 이름이 다르면 토큰이 전달되지 않아 갱신되지 않습니다.
+
 **③ 풀이 저장소에 파일 추가하기**
 
 **풀이 저장소** 첫 화면에서 <img src="docs/buttons/add-file.svg" height="22" alt="Add file"> → <img src="docs/buttons/create-new-file.svg" height="22" alt="Create new file">
@@ -244,7 +246,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          curl -sS -X POST \
+          curl -sS --fail-with-body -X POST \
             -H "Authorization: Bearer ${{ secrets.BADGE_DISPATCH_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/내아이디/programmers-streak-badge/dispatches \
@@ -252,7 +254,8 @@ jobs:
 ```
 
 > 💡 풀이 저장소에 이미 다른 배지용 워크플로가 있다면, 그 파일에 이어 붙이지 말고 **새 파일로** 만드세요.<br>
-> ✅ 문제를 하나 푼 뒤 배지 저장소의 `Actions` 탭에 새 실행이 생기면 연결 완료입니다.
+> ✅ 문제를 하나 푼 뒤 배지 저장소의 `Actions` 탭에 새 실행이 생기면 연결 완료입니다.<br>
+> ❌ 풀이 저장소의 `notify-badge` 실행이 빨간색으로 실패하고 `Bad credentials` 가 보이면, ②의 Secret 이름이나 토큰 값을 확인하세요.
 
 <br>
 
