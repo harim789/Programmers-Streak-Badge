@@ -37,9 +37,9 @@
 <text x="56" y="394" class="s" font-size="44" font-weight="600" letter-spacing="-1" fill="#FFFFFF">156<tspan class="i" font-size="22" font-weight="400" letter-spacing="0" dx="7" fill-opacity=".85">problems</tspan></text>
 </g>
 <rect x="336" y="86" width="496" height="332" rx="22" fill="#14041C" fill-opacity=".30"/><rect x="336" y="86" width="496" height="332" rx="22" fill="#FFFFFF" fill-opacity=".07" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1"/>
-<rect x="649.2" y="104" width="162.8" height="32" rx="16" fill="#FFFFFF" fill-opacity=".10" stroke="#FFFFFF" stroke-opacity=".5"/>
-<g transform="translate(662.8000000000001,111.6) scale(.7)" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l2.9 2.9 5.6-6"/></g>
-<text x="687.2" y="124.5" class="s up" font-size="12.5" font-weight="600" fill="#FFFFFF">SOLVED TODAY</text>
+<rect x="630.4" y="104" width="181.6" height="32" rx="16" fill="#FFFFFF" fill-opacity=".10" stroke="#FFFFFF" stroke-opacity=".5"/>
+<g transform="translate(644.0,111.6) scale(.7)" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.4l2.9 2.9 5.6-6"/></g>
+<text x="668.4" y="124.5" class="s up" font-size="12.5" font-weight="600" fill="#FFFFFF">2 SOLVED TODAY</text>
 <g filter="url(#ts)">
 <text x="360" y="130" class="s" font-size="15" fill="#FFFFFF" fill-opacity=".82">Current streak</text>
 <text x="360" y="180" class="s" font-size="50" font-weight="600" letter-spacing="-1.5" fill="#FFFFFF">2<tspan class="i" font-size="32" font-weight="400" letter-spacing="0" dx="8">days in a row</tspan></text>
