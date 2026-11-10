@@ -183,7 +183,7 @@ def render(counts: dict[dt.date, int], today: dt.date, start: dt.date, stats: St
     rx0, rw = 336, W - 28 - 336
     a(panel(rx0, top, rw, ph, 22))
     ix = rx0 + 24
-    label = "SOLVED TODAY" if done else "NOT YET TODAY"
+    label = f"{counts.get(today, 0)} SOLVED TODAY" if done else "NOT YET TODAY"
     sw = 50 + len(label) * 9.4
     sx = rx0 + rw - 20 - sw
     a(f'<rect x="{sx}" y="{top+18}" width="{sw:g}" height="32" rx="16" fill="{WHITE}" fill-opacity=".10" stroke="{WHITE}" stroke-opacity=".5"/>')

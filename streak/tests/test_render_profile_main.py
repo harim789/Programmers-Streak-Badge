@@ -33,8 +33,12 @@ class RenderTest(unittest.TestCase):
         out = self.svg({TODAY: 1})
         self.assertIn(">day in a row<", out)
         self.assertIn(">1 day</tspan>", out)
-        self.assertIn("SOLVED TODAY", out)
+        self.assertIn(">1 SOLVED TODAY<", out)
         self.assertIn("Day 2 tomorrow.", out)
+
+    def test_today_count_in_pill(self):
+        out = self.svg({TODAY - dt.timedelta(days=1): 3, TODAY: 12})
+        self.assertIn(">12 SOLVED TODAY<", out)
 
     def test_zero_pending(self):
         out = self.svg({})
