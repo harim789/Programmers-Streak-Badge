@@ -20,14 +20,14 @@ BG_TOP, BG_BOTTOM = "#3A1442", "#22092A"
 GLOW_PINK, GLOW_VIOLET, ORB = "#E39AD0", "#8E4BC4", "#9B3A9A"
 WHITE = "#FFFFFF"
 GLASS_FILL, GLASS_STROKE = 0.07, 0.40
-MISSED = "#FFC27A"
-LEVELS = [("#F2A6DA", .30), ("#F2A6DA", .58), ("#F7C6EA", .85), ("#FFFFFF", 1.0)]  # 1, 2, 3-4, 5+
+EMPTY = ("#FFFFFF", .92)  # 안 푼 날: 흰색
+LEVELS = [("#E6C4F5", 1.0), ("#C487E6", 1.0), ("#9446CC", 1.0), ("#5A1690", 1.0)]  # 1, 2, 3-4, 5+ (많을수록 진한 보라)
 MONTHS = "Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split()
 
 SANS = "'Hanken', 'Helvetica Neue', Arial, sans-serif"
 SERIF = "'InstrumentItalic', Georgia, 'Times New Roman', serif"
 
-WEEKS, CELL, GAP = 16, 15, 5
+WEEKS, CELL, GAP = 20, 15, 5
 STEP = CELL + GAP
 
 
@@ -222,26 +222,22 @@ def render(counts: dict[dt.date, int], today: dt.date, start: dt.date, stats: St
             lv = level_of(counts.get(d, 0))
             if d < start:
                 a(f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="4.5" fill="{WHITE}" fill-opacity=".05"/>')
-            elif lv == 0 and d != today:
-                a(f'<rect x="{x+.75}" y="{y+.75}" width="{CELL-1.5}" height="{CELL-1.5}" rx="4" fill="{MISSED}" fill-opacity=".12" stroke="{MISSED}" stroke-opacity=".9" stroke-width="1.5"/>')
-            elif lv == 0:
-                a(f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="4.5" fill="{WHITE}" fill-opacity=".08"/>')
             else:
-                c, op = LEVELS[lv - 1]
+                c, op = LEVELS[lv - 1] if lv else EMPTY
                 a(f'<rect x="{x}" y="{y}" width="{CELL}" height="{CELL}" rx="4.5" fill="{c}" fill-opacity="{op}"/>')
             if d == today:
                 cls = "" if done else ' class="p"'
                 a(f'<rect x="{x-3}" y="{y-3}" width="{CELL+6}" height="{CELL+6}" rx="7" fill="none" stroke="{WHITE}" stroke-width="1.6"{cls}/>')
-    # 범례
-    lgx = gx0 + WEEKS * STEP + 14
-    a(f'<rect x="{lgx+.75}" y="{gy0+.75}" width="12.5" height="12.5" rx="3.5" fill="{MISSED}" fill-opacity=".12" stroke="{MISSED}" stroke-opacity=".9" stroke-width="1.5"/>')
-    a(f'<text x="{lgx+21}" y="{gy0+12}" class="s" font-size="12.5" fill="{WHITE}" fill-opacity=".85">Missed</text>')
-    a(f'<rect x="{lgx}" y="{gy0+26}" width="14" height="14" rx="4" fill="none" stroke="{WHITE}" stroke-width="1.5"/>')
-    a(f'<text x="{lgx+21}" y="{gy0+38}" class="s" font-size="12.5" fill="{WHITE}" fill-opacity=".85">Today</text>')
-    a(f'<text x="{lgx}" y="{gy0+76}" class="s" font-size="12.5" fill="{WHITE}" fill-opacity=".85">Less</text>')
-    for i, (c, op) in enumerate(LEVELS):
-        a(f'<rect x="{lgx + (i%2)*18}" y="{gy0+86 + (i//2)*18}" width="14" height="14" rx="4" fill="{c}" fill-opacity="{op}"/>')
-    a(f'<text x="{lgx}" y="{gy0+136}" class="s" font-size="12.5" fill="{WHITE}" fill-opacity=".85">More</text>')
+    # 범례: 잔디 아래 한 줄 — 왼쪽 Today, 오른쪽 Less □□□□□ More
+    ly = gy0 + 7 * STEP + 2
+    a(f'<rect x="{gx0+.75}" y="{ly+.75}" width="10.5" height="10.5" rx="3" fill="none" stroke="{WHITE}" stroke-width="1.5"/>')
+    a(f'<text x="{gx0+19}" y="{ly+10.5}" class="s" font-size="12" fill="{WHITE}" fill-opacity=".85">Today</text>')
+    gr = gx0 + WEEKS * STEP - GAP
+    a(f'<text x="{gr}" y="{ly+10.5}" class="s" font-size="12" fill="{WHITE}" fill-opacity=".85" text-anchor="end">More</text>')
+    bx = gr - 38 - (5 * 16 - 4)
+    for i, (c, op) in enumerate([EMPTY] + LEVELS):
+        a(f'<rect x="{bx + i*16}" y="{ly}" width="12" height="12" rx="3.5" fill="{c}" fill-opacity="{op}"/>')
+    a(f'<text x="{bx-7}" y="{ly+10.5}" class="s" font-size="12" fill="{WHITE}" fill-opacity=".85" text-anchor="end">Less</text>')
 
     a('</svg>')
     return "\n".join(o)
